@@ -1,4 +1,3 @@
-// app/api/webhook/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
@@ -7,13 +6,18 @@ import { getMailer } from "@/lib/mailer";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
+  console.log("WEBHOOK HIT");
 
   const sig = req.headers.get("stripe-signature");
+  console.log("SIGNATURE EXISTS:", !!sig);
+
   if (!sig) {
     return NextResponse.json({ error: "Missing stripe-signature" }, { status: 400 });
   }
 
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  console.log("WEBHOOK SECRET EXISTS:", !!secret);
+
   if (!secret) {
     return NextResponse.json({ error: "Missing STRIPE_WEBHOOK_SECRET" }, { status: 500 });
   }
@@ -24,20 +28,25 @@ export async function POST(req: Request) {
   try {
     const stripe = getStripe();
     event = stripe.webhooks.constructEvent(rawBody, sig, secret);
+    console.log("EVENT TYPE:", event.type);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    console.error("WEBHOOK CONSTRUCT ERROR:", message);
     return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
   }
 
-  // ignore everything else fast
   if (event.type !== "checkout.session.completed") {
+    console.log("IGNORED EVENT:", event.type);
     return NextResponse.json({ received: true }, { status: 200 });
   }
 
-  // ---- from here: only checkout.session.completed ----
   try {
     const session = event.data.object as Stripe.Checkout.Session;
+    console.log("SESSION ID:", session.id);
+    console.log("PAYMENT STATUS:", session.payment_status);
+
     if (session.payment_status !== "paid") {
+      console.log("SESSION NOT PAID");
       return NextResponse.json({ received: true }, { status: 200 });
     }
 
@@ -52,7 +61,6 @@ export async function POST(req: Request) {
 
     const currency = (session.currency || "").toUpperCase();
 
-    // ENV sanity
     console.log("ENV CHECK", {
       EMAIL_HOST: process.env.EMAIL_HOST,
       EMAIL_PORT: process.env.EMAIL_PORT,
@@ -67,8 +75,8 @@ export async function POST(req: Request) {
 
     const transporter = getMailer();
 
-    // ✅ this will immediately tell you SMTP connection/auth issues
     await transporter.verify();
+    console.log("SMTP VERIFY OK");
 
     const info1 = await transporter.sendMail({
       from: `"Ellenox Orders" <${fromEmail}>`,
@@ -90,6 +98,8 @@ export async function POST(req: Request) {
         `Notes: ${m.notes ?? "-"}\n`,
     });
 
+    console.log("INTERNAL EMAIL SENT:", info1.messageId);
+
     if (customerEmail) {
       const info2 = await transporter.sendMail({
         from: `"Ellenox" <${fromEmail}>`,
@@ -105,12 +115,16 @@ export async function POST(req: Request) {
           `• Reference: ${session.id}\n\n` +
           `Best regards,\nEllenox Team`,
       });
-      
+
+      console.log("CUSTOMER EMAIL SENT:", info2.messageId);
+    } else {
+      console.log("NO CUSTOMER EMAIL");
     }
 
     return NextResponse.json({ received: true }, { status: 200 });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    console.error("WEBHOOK MAIL ERROR:", message);
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -5,12 +5,25 @@ export async function POST(req: Request) {
   try {
     const data = await req.json()
 
-    // минимална серверска валидација
-    if (!data?.gdprConsent) return NextResponse.json({ error: "Consent is required" }, { status: 400 })
+    if (!data?.gdprConsent) {
+      return NextResponse.json({ error: "Consent is required" }, { status: 400 })
+    }
 
-    const required = ["name", "email", "phone", "postCode", "fullAddress", "productInterest", "wifiSignalConfirmed", "mainFuse"]
+    const required = [
+      "name",
+      "email",
+      "phone",
+      "postCode",
+      "fullAddress",
+      "productInterest",
+      "wifiSignalConfirmed",
+      "mainFuse",
+    ]
+
     for (const k of required) {
-      if (!data?.[k]) return NextResponse.json({ error: `Missing field: ${k}` }, { status: 400 })
+      if (!data?.[k]) {
+        return NextResponse.json({ error: `Missing field: ${k}` }, { status: 400 })
+      }
     }
 
     const host = process.env.EMAIL_HOST
@@ -27,9 +40,11 @@ export async function POST(req: Request) {
     const transporter = nodemailer.createTransport({
       host,
       port,
-      secure, // true за 465, false за 587
+      secure,
       auth: { user, pass },
     })
+
+    await transporter.verify()
 
     const subject = `Installation Request — ${data.name} (${data.postCode})`
     const text = [
@@ -45,7 +60,7 @@ export async function POST(req: Request) {
     ].join("\n")
 
     await transporter.sendMail({
-      from: user,
+      from: `"Ellenox Quotes" <${user}>`,
       to,
       replyTo: data.email,
       subject,
@@ -53,7 +68,11 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ ok: true })
-  } catch {
-    return NextResponse.json({ error: "Bad request" }, { status: 400 })
+  } catch (err: any) {
+    console.error("MAIL ERROR:", err)
+    return NextResponse.json(
+      { error: err?.message || "Server error" },
+      { status: 500 }
+    )
   }
 }
