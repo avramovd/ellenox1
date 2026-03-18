@@ -57,7 +57,7 @@ export function ProductsSection() {
 
             {/* Key Benefits */}
             <ul className="mt-6 space-y-2">
-              {["5-year warranty", "Free delivery", "Professional installation"].map((benefit) => (
+              {["3 + 1 Year warranty", "Free delivery", "Professional installation"].map((benefit) => (
                 <li key={benefit} className="flex items-center gap-2 text-muted-foreground">
                   <Check className="h-4 w-4 text-primary" />
                   {benefit}

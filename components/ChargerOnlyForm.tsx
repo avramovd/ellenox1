@@ -159,7 +159,7 @@ export function ChargerOnlyForm({ productName, price }: ChargerOnlyFormProps) {
               value={formData.phone}
               onBlur={() => markTouched("phone")}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              placeholder="+44 7700 900000"
+              placeholder="+442080500852"
             />
             {touched.phone && errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
           </div>

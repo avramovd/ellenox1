@@ -9,30 +9,32 @@ export function FuelComparison() {
   const [distance, setDistance] = useState(100)
 
   const comparison = useMemo(() => {
-    // Prices per unit (UK)
+    // Prices
     const electricityPrice = 0.28 // £/kWh
-    const dieselPrice = 1.45 // £/l
-    const petrolPrice = 1.4 // £/l
+    const dieselPrice = 1.45 // £/litre
+    const petrolPrice = 1.4 // £/litre
 
-    // Consumption per 100miles
-    const evConsumption = 17 // kWh/100miles
-    const dieselConsumption = 6 // l/100miles
-    const petrolConsumption = 7 // l/100miles
+    // Consumption
+    const evConsumptionPer100Miles = 17 // kWh / 100 miles
+    const dieselConsumptionPer100Km = 6 // litres / 100 km
+    const petrolConsumptionPer100Km = 7 // litres / 100 km
 
-    // Cost per miles
-    const evCostPermiles = Number((((evConsumption / 100) * electricityPrice)).toFixed(4))
-    const dieselCostPermiles = Number((((dieselConsumption / 100) * dieselPrice)).toFixed(3))
-    const petrolCostPermiles = Number((((petrolConsumption / 100) * petrolPrice)).toFixed(3))
+    const kmPer100Miles = 160.934
+    const milesPer100Km = 62.137
 
-    const evCost = evCostPermiles * distance
-    const dieselCost = dieselCostPermiles * distance
-    const petrolCost = petrolCostPermiles * distance
+    // Cost per mile
+    const evCostPerMile = (evConsumptionPer100Miles * electricityPrice) / 100
+    const dieselCostPerMile = (dieselConsumptionPer100Km * dieselPrice) / milesPer100Km
+    const petrolCostPerMile = (petrolConsumptionPer100Km * petrolPrice) / milesPer100Km
 
+    const evCost = evCostPerMile * distance
+    const dieselCost = dieselCostPerMile * distance
+    const petrolCost = petrolCostPerMile * distance
 
     return {
-      evCostPermiles,
-      dieselCostPermiles,
-      petrolCostPermiles,
+      evCostPerMile,
+      dieselCostPerMile,
+      petrolCostPerMile,
       evCost,
       dieselCost,
       petrolCost,
@@ -76,7 +78,9 @@ export function FuelComparison() {
                   </div>
                   <div>
                     <p className="font-semibold">Electric</p>
-                    <p className="text-sm text-muted-foreground">£{comparison.evCostPermiles.toFixed(4)}/miles</p>
+                    <p className="text-sm text-muted-foreground">
+                      £{comparison.evCostPerMile.toFixed(3)}/mile
+                    </p>
                   </div>
                 </div>
                 <p className="text-2xl font-bold text-primary">£{comparison.evCost.toFixed(2)}</p>
@@ -97,7 +101,9 @@ export function FuelComparison() {
                   </div>
                   <div>
                     <p className="font-semibold">Diesel</p>
-                    <p className="text-sm text-muted-foreground">£{comparison.dieselCostPermiles.toFixed(3)}/miles</p>
+                    <p className="text-sm text-muted-foreground">
+                      £{comparison.dieselCostPerMile.toFixed(3)}/mile
+                    </p>
                   </div>
                 </div>
                 <p className="text-2xl font-bold">£{comparison.dieselCost.toFixed(2)}</p>
@@ -118,7 +124,9 @@ export function FuelComparison() {
                   </div>
                   <div>
                     <p className="font-semibold">Petrol</p>
-                    <p className="text-sm text-muted-foreground">£{comparison.petrolCostPermiles.toFixed(3)}/miles</p>
+                    <p className="text-sm text-muted-foreground">
+                      £{comparison.petrolCostPerMile.toFixed(3)}/mile
+                    </p>
                   </div>
                 </div>
                 <p className="text-2xl font-bold">£{comparison.petrolCost.toFixed(2)}</p>

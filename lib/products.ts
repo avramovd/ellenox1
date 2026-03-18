@@ -31,12 +31,12 @@ export interface Product {
 
 export const smartCharger: Product = {
   id: "Ellenox -smart-charger",
-  name: "Ellenox  Smart EV Charger",
+  name: "Ellenox Smart EV Charger Model 1",
   tagline: "Smart charging for your electric vehicle",
   description:
-    "Ellenox  Smart EV Charger is a premium intelligent charging station with full connectivity, dynamic load balancing and OCPP compatibility. Control charging from anywhere in the world via our mobile app.",
-  price: 899,
-  installationPrice: 299,
+    "Ellenox Smart EV Charger is Model 1 — a premium intelligent charging station with full connectivity, dynamic load balancing and OCPP compatibility. Control charging from anywhere in the world via our mobile app.",
+  price: 495,
+  installationPrice: 404,
   image: "/product.webp",
   images: [
     "/product.webp",
@@ -89,7 +89,7 @@ export const smartCharger: Product = {
     {
       category: "Electrical Parameters",
       specs: [
-        { label: "Maximum Power", value: "11kW (3-phase) / 7.4kW (1-phase)" },
+        { label: "Maximum Power", value: "7.4kW (3-phase) / 7.4kW (1-phase)" },
         { label: "Input Voltage", value: "230V (1-phase) / 400V (3-phase)" },
         { label: "Maximum Current", value: "16A per phase" },
         { label: "Frequency", value: "50/60 Hz" },
@@ -126,8 +126,8 @@ export const smartCharger: Product = {
       specs: [
         { label: "Shock Protection", value: "DC 6mA protection, Type A RCD" },
         { label: "Overload Protection", value: "Built-in thermal protection" },
-        { label: "Certifications", value: "CE, TÜV Rheinland, IEC 61851-1" },
-        { label: "Warranty", value: "5 years" },
+        { label: "Certifications", value: "CE, UKCA, EN 61851, EN 62196" },
+        { label: "Warranty", value: "3 years" },
       ],
     },
   ],

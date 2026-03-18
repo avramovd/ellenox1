@@ -38,7 +38,7 @@ export default function PrivacyPage() {
   <h2>2. How to contact us</h2>
   <p>
     If you have any questions about this policy or want to exercise your rights, you can contact us at{" "}
-    <strong>info@Ellenox .co.uk</strong>.
+    <strong>info@ellenox.uk</strong>.
   </p>
 
   <h2>3. The personal data we collect</h2>
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
   <h2>6. Marketing communications</h2>
   <p>
     We will only send you marketing emails or SMS where we are allowed to do so under PECR. You can opt out at any time
-    by using the unsubscribe link in our emails or by contacting us at <strong>info@Ellenox .co.uk</strong>.
+    by using the unsubscribe link in our emails or by contacting us at <strong>info@ellenox.uk</strong>.
   </p>
 
   <h2>7. Cookies and similar technologies</h2>
@@ -169,7 +169,7 @@ export default function PrivacyPage() {
     <li>Withdraw consent at any time (where we rely on consent)</li>
   </ul>
   <p>
-    To exercise your rights, contact us at <strong>info@Ellenox .co.uk</strong>.
+    To exercise your rights, contact us at <strong>info@ellenox.uk</strong>.
   </p>
 
   <h2>13. Complaints</h2>

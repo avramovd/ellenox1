@@ -31,7 +31,7 @@ const features = [
     icon: ShieldCheck,
     title: "Safe and reliable",
     description:
-      "Built-in protection against overload, short circuits, over/under voltage, overheating, and electric shock. Integrated RCD and IP65 protection. Certified CE & TÜV for safe and easy installation.",
+      "Built-in protection against overload, short circuits, over/under voltage, overheating, and electric shock. Integrated RCD and IP65 protection. Certified CE & UKCA for safe and easy installation.",
   },
   {
     icon: BadgeCheck,
@@ -49,9 +49,9 @@ const features = [
   // ✅ 7th card (bottom-center)
   {
     icon: Award,
-    title: "Approved by OZEV for £350 Grant",
+    title: "Approved by OZEV for £500 Grant",
     description:
-      "Eligible for the OZEV grant — save up to £350 on your home charger installation.",
+      "Eligible for the OZEV grant — save up to £500 on your home charger installation.",
     isCentered: true,
   },
 ]

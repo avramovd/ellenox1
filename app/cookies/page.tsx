@@ -58,7 +58,7 @@ export default function CookiesPage() {
               <h2>Contact</h2>
               <p>
                 If you have questions about our cookie policy, please contact us at:
-                <strong> info@Ellenox .co.uk</strong>
+                <strong> info@ellenox.uk</strong>
               </p>
             </div>
           </div>

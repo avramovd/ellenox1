@@ -20,25 +20,22 @@ export function SavingsCalculator() {
     const yearlymiles = monthlymiles * 12
 
     // EV costs
-    const evKwhPermiles = evConsumption / 100
-    const evCostPermilesRaw = evKwhPermiles * electricityPrice
-
-    const evCostPermiles = Number(evCostPermilesRaw.toFixed(3))
-
-    const evMonthlyCost = monthlymiles * evCostPermiles
-    const evYearlyCost = yearlymiles * evCostPermiles
+    const evKwhPerMile = evConsumption / 100
+    const evCostPerMile = Number((evKwhPerMile * electricityPrice).toFixed(3))
+    const evMonthlyCost = monthlymiles * evCostPerMile
+    const evYearlyCost = yearlymiles * evCostPerMile
 
     // Diesel costs
-    const dieselLPermiles = dieselConsumption / 100
-    const dieselCostPermiles = dieselLPermiles * dieselPrice
-    const dieselMonthlyCost = monthlymiles * dieselCostPermiles
-    const dieselYearlyCost = yearlymiles * dieselCostPermiles
+    const dieselLPerMile = dieselConsumption / 100
+    const dieselCostPerMile = dieselLPerMile * dieselPrice
+    const dieselMonthlyCost = monthlymiles * dieselCostPerMile
+    const dieselYearlyCost = yearlymiles * dieselCostPerMile
 
     // Petrol costs
-    const petrolLPermiles = petrolConsumption / 100
-    const petrolCostPermiles = petrolLPermiles * petrolPrice
-    const petrolMonthlyCost = monthlymiles * petrolCostPermiles
-    const petrolYearlyCost = yearlymiles * petrolCostPermiles
+    const petrolLPerMile = petrolConsumption / 100
+    const petrolCostPerMile = petrolLPerMile * petrolPrice
+    const petrolMonthlyCost = monthlymiles * petrolCostPerMile
+    const petrolYearlyCost = yearlymiles * petrolCostPerMile
 
     // Savings
     const savingsVsDieselMonthly = dieselMonthlyCost - evMonthlyCost
@@ -46,17 +43,22 @@ export function SavingsCalculator() {
     const savingsVsPetrolMonthly = petrolMonthlyCost - evMonthlyCost
     const savingsVsPetrolYearly = petrolYearlyCost - evYearlyCost
 
-    const percentSavingsVsDiesel = ((dieselCostPermiles - evCostPermiles) / dieselCostPermiles) * 100
-    const percentSavingsVsPetrol = ((petrolCostPermiles - evCostPermiles) / petrolCostPermiles) * 100
+    const percentSavingsVsDiesel = dieselCostPerMile > 0
+      ? ((dieselCostPerMile - evCostPerMile) / dieselCostPerMile) * 100
+      : 0
+
+    const percentSavingsVsPetrol = petrolCostPerMile > 0
+      ? ((petrolCostPerMile - evCostPerMile) / petrolCostPerMile) * 100
+      : 0
 
     return {
-      evCostPermiles,
+      evCostPerMile,
       evMonthlyCost,
       evYearlyCost,
-      dieselCostPermiles,
+      dieselCostPerMile,
       dieselMonthlyCost,
       dieselYearlyCost,
-      petrolCostPermiles,
+      petrolCostPerMile,
       petrolMonthlyCost,
       petrolYearlyCost,
       savingsVsDieselMonthly,
@@ -183,8 +185,7 @@ export function SavingsCalculator() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Electric Charging</p>
-                      <p className="text-2xl font-bold">£{calculations.evCostPermiles.toFixed(3)}/miles</p>
-
+                      <p className="text-2xl font-bold">£{calculations.evCostPerMile.toFixed(3)}/mile</p>
                     </div>
                   </div>
                   <div className="mt-4 grid grid-cols-2 gap-4">
@@ -209,7 +210,7 @@ export function SavingsCalculator() {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Diesel</p>
-                        <p className="text-xl font-bold">£{calculations.dieselCostPermiles.toFixed(3)}/miles</p>
+                        <p className="text-xl font-bold">£{calculations.dieselCostPerMile.toFixed(3)}/mile</p>
                       </div>
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">
@@ -226,7 +227,7 @@ export function SavingsCalculator() {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Petrol</p>
-                        <p className="text-xl font-bold">£{calculations.petrolCostPermiles.toFixed(3)}/miles</p>
+                        <p className="text-xl font-bold">£{calculations.petrolCostPerMile.toFixed(3)}/mile</p>
                       </div>
                     </div>
                     <p className="mt-2 text-sm text-muted-foreground">
@@ -253,12 +254,15 @@ export function SavingsCalculator() {
                   <div className="mt-4 grid grid-cols-2 gap-4">
                     <div className="rounded-lg bg-background p-3">
                       <p className="text-xs text-muted-foreground">vs Diesel</p>
-                      <p className="font-semibold text-green-600">{calculations.percentSavingsVsDiesel.toFixed(0)}%</p>
+                      <p className="font-semibold text-green-600">
+                        {calculations.percentSavingsVsDiesel.toFixed(0)}%
+                      </p>
                     </div>
                     <div className="rounded-lg bg-background p-3">
                       <p className="text-xs text-muted-foreground">vs Petrol</p>
-                      <p className="font-semibold text-green-600">{calculations.percentSavingsVsPetrol.toFixed(0)}%
-</p>
+                      <p className="font-semibold text-green-600">
+                        {calculations.percentSavingsVsPetrol.toFixed(0)}%
+                      </p>
                     </div>
                   </div>
                 </CardContent>

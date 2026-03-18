@@ -5,7 +5,7 @@ export default function Page() {
     <div className="container max-w-xl py-10">
       <ChargerOnlyForm
         productName="EV Charger"
-        price={899}
+        price={495}
       />
     </div>
   )

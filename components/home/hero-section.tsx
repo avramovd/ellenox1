@@ -12,10 +12,7 @@ export function HeroSection() {
 
           {/* LEFT SIDE */}
           <div className="flex flex-col gap-6">
-            <div className="inline-flex w-fit items-center rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-              Ellenox  Certified Partner
-            </div>
-
+            
             <h1 className="text-balance text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
               Smart charging for your{" "}
               <span className="text-primary">electric vehicle</span>
@@ -78,7 +75,7 @@ export function HeroSection() {
                     <p className="text-sm text-muted-foreground">
                       Ellenox  Pro 22kW
                     </p>
-                    <p className="text-2xl font-bold">from £899</p>
+                    <p className="text-2xl font-bold">from £495</p>
                   </div>
 
                   <Button asChild>

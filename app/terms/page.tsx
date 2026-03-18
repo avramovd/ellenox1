@@ -94,7 +94,7 @@ export default function TermsPage() {
     <li>Installed or customised products may not be eligible for return</li>
   </ul>
   <p>
-    To request a return, please contact us at <strong>info@Ellenox .co.uk</strong>.
+    To request a return, please contact us at <strong>info@ellenox.uk</strong>.
   </p>
 
   <h2>9. Warranty</h2>
@@ -154,7 +154,7 @@ export default function TermsPage() {
 
   <h2>17. Contact</h2>
   <p>
-    For any questions regarding these Terms, please contact us at <strong>info@Ellenox .co.uk</strong>.
+    For any questions regarding these Terms, please contact us at <strong>info@ellenox.uk</strong>.
   </p>
 </div>
 

@@ -32,15 +32,15 @@ const serviceIncludes = [
   {
     icon: Headphones,
     title: "Support & Warranty",
-    description: "5-year warranty and free technical support after installation",
+    description: "4  Year warranty and free technical support after installation",
   },
 ]
 
 const processSteps = [
   { step: 1, title: "Fill in the form", description: "Takes less than 2 minutes" },
-  { step: 2, title: "Free consultation", description: "We call you within 24 hours" },
+  { step: 2, title: "Free consultation", description: "We call you within 48 hours" },
   { step: 3, title: "Receive your quote", description: "Clear pricing with no surprises" },
-  { step: 4, title: "Installation", description: "On a date convenient for you" },
+  { step: 4, title: "Warranty", description: "Standard warranty up to 4 years included" },
 ]
 export default async function RequestQuotePage({
   searchParams,
@@ -115,7 +115,7 @@ export default async function RequestQuotePage({
                       <p className="mt-1 text-sm text-muted-foreground">{product.tagline}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
                         <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-                          11kW
+                          7.4kW
                         </span>
                         <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
                           Smart App

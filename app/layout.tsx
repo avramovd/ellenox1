@@ -87,8 +87,8 @@ const organizationSchema = {
   alternateName: SITE_NAME,
   url: SITE_URL,
   logo: absoluteUrl("/logo.webp"),
-  email: "info@Ellenox .co.uk",
-  telephone: "+442012345678",
+  email: "info@ellenox.uk",
+  telephone: "+442080500852",
   address: {
     "@type": "PostalAddress",
     streetAddress: "123 Electric Avenue",

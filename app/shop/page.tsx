@@ -88,10 +88,10 @@ export default function ShopPage() {
               </div>
 
               <div className="relative">
-<div className="mx-auto -mt-8 aspect-square w-1/2 lg:w-[400px] overflow-hidden rounded-3xl bg-linear-to-br from-muted to-muted/50">                  <img
+<div className="mx-auto mt-[3px] aspect-square w-1/2 lg:w-[400px] overflow-hidden rounded-3xl bg-transparent">                  <img
                     src={product.image || "/placeholder.svg"}
                     alt={product.name}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain"
                   />
                 </div>
                 <div className="absolute -bottom-4 -right-4 rounded-2xl border border-border bg-background p-4 shadow-xl">
@@ -100,7 +100,7 @@ export default function ShopPage() {
                       <Check className="h-6 w-6" />
                     </div>
                     <div>
-                      <p className="font-semibold">5-Year Warranty</p>
+                      <p className="font-semibold">3 + 1 Year Warranty</p>
                       <p className="text-sm text-muted-foreground">Full protection</p>
                     </div>
                   </div>
