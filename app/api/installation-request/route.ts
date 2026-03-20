@@ -27,8 +27,8 @@ export async function POST(req: Request) {
     }
 
     const host = process.env.EMAIL_HOST
-    const port = Number(process.env.EMAIL_PORT || "465")
-    const secure = String(process.env.EMAIL_SECURE).toLowerCase() === "true"
+    const port = Number(process.env.EMAIL_PORT || "587")
+    const secure = port === 465
     const user = process.env.EMAIL_USER
     const pass = process.env.EMAIL_PASS
     const to = process.env.ORDERS_TO_EMAIL ?? user
@@ -44,7 +44,6 @@ export async function POST(req: Request) {
       auth: { user, pass },
     })
 
-    await transporter.verify()
 
     const subject = `Installation Request — ${data.name} (${data.postCode})`
     const text = [
