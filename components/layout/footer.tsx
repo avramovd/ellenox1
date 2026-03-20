@@ -125,7 +125,7 @@ export function Footer() {
     </p>
 
     <p className="text-sm text-muted-foreground">
-      RWebsite by{" "}
+      Website by{" "}
       <a
         href="https://devorasolutions.com"
         target="_blank"
