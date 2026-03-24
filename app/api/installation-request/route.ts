@@ -4,7 +4,7 @@ import nodemailer from "nodemailer"
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-
+    console.log('Received Webhook POST request', data);
     if (!data?.gdprConsent) {
       return NextResponse.json({ error: "Consent is required" }, { status: 400 })
     }
@@ -20,6 +20,7 @@ export async function POST(req: Request) {
       "mainFuse",
     ]
 
+    console.log('Line 23 of the Webhook POST request', required);
     for (const k of required) {
       if (!data?.[k]) {
         return NextResponse.json({ error: `Missing field: ${k}` }, { status: 400 })
