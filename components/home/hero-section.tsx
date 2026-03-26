@@ -61,7 +61,7 @@ export function HeroSection() {
                 loop
                 playsInline
                 preload="metadata"
-                poster="/poster.jpg"   // 👉 додај 1 screenshot како fallback
+                  // 👉 додај 1 screenshot како fallback
               >
                 <source src="/360.webm" type="video/webm" />
                 <source src="/360.mp4" type="video/mp4" />
