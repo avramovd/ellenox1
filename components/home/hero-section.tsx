@@ -64,7 +64,7 @@ export function HeroSection() {
                   // 👉 додај 1 screenshot како fallback
               >
                 {/*<source src="/360.webm" type="video/webm" />*/}
-                {/*<source src="/360.mp4" type="video/mp4" />*/}
+                <source src="/360.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
 
