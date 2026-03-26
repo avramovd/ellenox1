@@ -28,7 +28,6 @@ export default function CompatibilityPage() {
 
         <CompatibleCars />
         <SavingsCalculator />
-        <FuelComparison />
       </main>
       <Footer />
     </div>

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { FuelComparison } from "./fuel-comparison"
 
 export function SavingsCalculator() {
   const [monthlymiles, setMonthlymiles] = useState(1500)
@@ -271,6 +272,14 @@ export function SavingsCalculator() {
           </div>
         </div>
       </div>
+      <FuelComparison
+  electricityPrice={electricityPrice}
+  dieselPrice={dieselPrice}
+  petrolPrice={petrolPrice}
+  evConsumption={evConsumption}
+  dieselConsumption={dieselConsumption}
+  petrolConsumption={petrolConsumption}
+/>
     </section>
   )
 }

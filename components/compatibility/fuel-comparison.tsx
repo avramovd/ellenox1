@@ -5,27 +5,29 @@ import { Zap, Fuel, TrendingUp, Car } from "lucide-react"
 import { Slider } from "@/components/ui/slider"
 import { Label } from "@/components/ui/label"
 
-export function FuelComparison() {
+type FuelComparisonProps = {
+  electricityPrice: number
+  dieselPrice: number
+  petrolPrice: number
+  evConsumption: number
+  dieselConsumption: number
+  petrolConsumption: number
+}
+
+export function FuelComparison({
+  electricityPrice,
+  dieselPrice,
+  petrolPrice,
+  evConsumption,
+  dieselConsumption,
+  petrolConsumption,
+}: FuelComparisonProps) {
   const [distance, setDistance] = useState(100)
 
   const comparison = useMemo(() => {
-    // Prices
-    const electricityPrice = 0.28 // £/kWh
-    const dieselPrice = 1.45 // £/litre
-    const petrolPrice = 1.4 // £/litre
-
-    // Consumption
-    const evConsumptionPer100Miles = 17 // kWh / 100 miles
-    const dieselConsumptionPer100Km = 6 // litres / 100 km
-    const petrolConsumptionPer100Km = 7 // litres / 100 km
-
-    const kmPer100Miles = 160.934
-    const milesPer100Km = 62.137
-
-    // Cost per mile
-    const evCostPerMile = (evConsumptionPer100Miles * electricityPrice) / 100
-    const dieselCostPerMile = (dieselConsumptionPer100Km * dieselPrice) / milesPer100Km
-    const petrolCostPerMile = (petrolConsumptionPer100Km * petrolPrice) / milesPer100Km
+    const evCostPerMile = (evConsumption * electricityPrice) / 100
+    const dieselCostPerMile = (dieselConsumption * dieselPrice) / 100
+    const petrolCostPerMile = (petrolConsumption * petrolPrice) / 100
 
     const evCost = evCostPerMile * distance
     const dieselCost = dieselCostPerMile * distance
@@ -39,9 +41,21 @@ export function FuelComparison() {
       dieselCost,
       petrolCost,
     }
-  }, [distance])
+  }, [
+    distance,
+    electricityPrice,
+    dieselPrice,
+    petrolPrice,
+    evConsumption,
+    dieselConsumption,
+    petrolConsumption,
+  ])
 
-  const maxCost = Math.max(comparison.evCost, comparison.dieselCost, comparison.petrolCost)
+  const maxCost = Math.max(
+    comparison.evCost,
+    comparison.dieselCost,
+    comparison.petrolCost
+  )
 
   return (
     <section className="py-16">
@@ -83,12 +97,17 @@ export function FuelComparison() {
                     </p>
                   </div>
                 </div>
-                <p className="text-2xl font-bold text-primary">£{comparison.evCost.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-primary">
+                  £{Math.round(comparison.evCost)}
+                </p>
               </div>
+
               <div className="mt-4">
                 <div
                   className="h-4 rounded-full bg-primary transition-all duration-500"
-                  style={{ width: `${(comparison.evCost / maxCost) * 100}%` }}
+                  style={{
+                    width: `${maxCost > 0 ? (comparison.evCost / maxCost) * 100 : 0}%`,
+                  }}
                 />
               </div>
             </div>
@@ -106,12 +125,17 @@ export function FuelComparison() {
                     </p>
                   </div>
                 </div>
-                <p className="text-2xl font-bold">£{comparison.dieselCost.toFixed(2)}</p>
+                <p className="text-2xl font-bold">
+                  £{Math.round(comparison.dieselCost)}
+                </p>
               </div>
+
               <div className="mt-4">
                 <div
                   className="h-4 rounded-full bg-muted-foreground/30 transition-all duration-500"
-                  style={{ width: `${(comparison.dieselCost / maxCost) * 100}%` }}
+                  style={{
+                    width: `${maxCost > 0 ? (comparison.dieselCost / maxCost) * 100 : 0}%`,
+                  }}
                 />
               </div>
             </div>
@@ -129,12 +153,17 @@ export function FuelComparison() {
                     </p>
                   </div>
                 </div>
-                <p className="text-2xl font-bold">£{comparison.petrolCost.toFixed(2)}</p>
+                <p className="text-2xl font-bold">
+                  £{Math.round(comparison.petrolCost)}
+                </p>
               </div>
+
               <div className="mt-4">
                 <div
                   className="h-4 rounded-full bg-muted-foreground/30 transition-all duration-500"
-                  style={{ width: `${(comparison.petrolCost / maxCost) * 100}%` }}
+                  style={{
+                    width: `${maxCost > 0 ? (comparison.petrolCost / maxCost) * 100 : 0}%`,
+                  }}
                 />
               </div>
             </div>
@@ -146,17 +175,19 @@ export function FuelComparison() {
               <p className="mt-2 text-2xl font-bold">{distance} miles</p>
               <p className="text-sm text-muted-foreground">Distance</p>
             </div>
+
             <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4 text-center">
               <TrendingUp className="mx-auto h-6 w-6 text-green-600" />
               <p className="mt-2 text-2xl font-bold text-green-600">
-                £{(comparison.dieselCost - comparison.evCost).toFixed(2)}
+                £{Math.round(comparison.dieselCost - comparison.evCost)}
               </p>
               <p className="text-sm text-muted-foreground">You save vs diesel</p>
             </div>
+
             <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4 text-center">
               <TrendingUp className="mx-auto h-6 w-6 text-green-600" />
               <p className="mt-2 text-2xl font-bold text-green-600">
-                £{(comparison.petrolCost - comparison.evCost).toFixed(2)}
+                £{Math.round(comparison.petrolCost - comparison.evCost)}
               </p>
               <p className="text-sm text-muted-foreground">You save vs petrol</p>
             </div>
