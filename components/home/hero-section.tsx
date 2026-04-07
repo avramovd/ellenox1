@@ -54,32 +54,6 @@ export function HeroSection() {
               className="relative aspect-square overflow-hidden rounded-3xl bg-muted"
             >
 
-             {/* MOBILE VIDEO */}
-<video
-  className="block md:hidden h-full w-full object-cover"
-  autoPlay
-  muted
-  loop
-  playsInline
-  preload="metadata"
-  poster="/video-cover.jpg"
->
-  <source src="/360.mp4" type="video/mp4" />
-</video>
-
-{/* DESKTOP VIDEO */}
-<video
-  className="hidden md:block h-full w-full object-cover"
-  autoPlay
-  muted
-  loop
-  playsInline
-  preload="metadata"
-  poster="/video-cover.jpg"
->
-  <source src="/360.mp4" type="video/mp4" />
-</video>
-
               {/* PRODUCT CARD OVERLAY */}
               <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background/95 p-4 backdrop-blur shadow-lg">
                 <div className="flex items-center justify-between">
