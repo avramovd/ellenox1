@@ -7,25 +7,25 @@ const screenshots = [
     id: "dashboard",
     title: "Home Screen",
     description: "Quick overview of current charging and statistics",
-    image: "/app-screenshot-dashboard.png",
+    image: "/home.png",
   },
   {
     id: "charging",
     title: "Active Charging",
     description: "Track progress in real-time",
-    image: "/app-screenshot-charging.png",
+    image: "/charging.png",
   },
   {
     id: "schedule",
     title: "Scheduling",
     description: "Set automatic charging times",
-    image: "/app-screenshot-schedule.png",
+    image: "/scheduling.jpg",
   },
   {
     id: "stats",
     title: "Statistics",
     description: "Analyse your costs",
-    image: "/app-screenshot-stats.png",
+    image: "/statistics.png",
   },
 ]
 

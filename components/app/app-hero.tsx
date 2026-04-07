@@ -42,7 +42,7 @@ export function AppHero() {
           </div>
           <div className="relative flex justify-center">
             <div className="relative">
-              <img src="/Ellenox -app-mockup-main.png" alt="Ellenox  mobile app" className="h-auto w-64 md:w-80" />
+              <img src="/home screan.PNG" alt="Ellenox  mobile app" className="h-auto w-64 md:w-80" />
             </div>
           </div>
         </div>
