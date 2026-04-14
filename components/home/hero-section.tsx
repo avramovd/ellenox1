@@ -1,25 +1,46 @@
+"use client"
+
 import Link from "next/link"
+import { useEffect, useRef, useState } from "react"
 import { Play, Calculator, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
+  const videoRef = useRef(null)
+  const [loadVideo, setLoadVideo] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setLoadVideo(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 }
+    )
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section className="relative overflow-hidden bg-background">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
 
       <div className="container relative mx-auto px-4 py-20 md:py-32">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-
-          {/* LEFT SIDE */}
           <div className="flex flex-col gap-6">
-            
             <h1 className="text-balance text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
               Smart charging for your{" "}
               <span className="text-primary">electric vehicle</span>
             </h1>
 
             <p className="max-w-lg text-lg text-muted-foreground">
-              Ellenox  offers premium smart EV chargers with professional installation.
+              Ellenox offers premium smart EV chargers with professional installation.
               Save up to 70% on fuel costs and charge conveniently at home.
             </p>
 
@@ -47,38 +68,43 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT SIDE VIDEO */}
           <div className="relative">
             <div
               id="video"
+              ref={videoRef}
               className="relative aspect-square overflow-hidden rounded-3xl bg-muted"
             >
+              <div className="h-full w-full">
+                <video
+                  className="block md:hidden h-full w-full object-contain"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  poster="/video-cover.jpg"
+                >
+                  {loadVideo && <source src="/360Mobile.mp4" type="video/mp4" />}
+                </video>
 
-             <img
-  src="/product.webp"
-  alt="Ellenox charger"
-  className="block md:hidden h-full w-full object-contain"
-/>
+                <video
+                  className="hidden md:block h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="none"
+                  poster="/video-cover.jpg"
+                >
+                  {loadVideo && <source src="/360.mp4" type="video/mp4" />}
+                </video>
+              </div>
 
-{/* DESKTOP VIDEO */}
-<video
-  className="hidden md:block h-full w-full object-cover"
-  autoPlay
-  muted
-  loop
-  playsInline
-  preload="metadata"
-  poster="/video-cover.jpg"
->
-  <source src="/360.mp4" type="video/mp4" />
-</video>
-
-              {/* PRODUCT CARD OVERLAY */}
               <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background/95 p-4 backdrop-blur shadow-lg">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">
-                      Ellenox  Pro 22kW
+                      Ellenox Model 1
                     </p>
                     <p className="text-2xl font-bold">from £495</p>
                   </div>
@@ -88,10 +114,8 @@ export function HeroSection() {
                   </Button>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </section>

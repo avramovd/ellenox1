@@ -109,7 +109,7 @@ export async function POST(req: Request) {
           `Hi${m.name ? ` ${m.name}` : ""},\n\n` +
           `Thanks for your payment. We’ve received your order successfully.\n\n` +
           `Order summary:\n` +
-          `• Item: ${m.productName ?? "Product"}${m.quantity ? ` (x${m.quantity})` : ""}\n` +
+          `• Model 1${m.quantity ? ` (x${m.quantity})` : ""}\n` +
           (m.variant ? `• Option: ${m.variant}\n` : "") +
           `• Amount paid: ${currency} ${amount}\n` +
           `• Reference: ${session.id}\n\n` +

@@ -50,25 +50,25 @@ const documents = [
   {
     name: "User Manual",
     description: "General operating instructions",
-    size: "240 KB",
+    size: "39.963 KB",
     href: "/docs/User Manual.pdf",
   },
   {
     name: "Installation Guide",
     description: "Installation and wiring instructions",
-    size: "1.162 MB",
-    href: "/docs/Installation_Guide.pdf",
+    size: "38.805 KB",
+    href: "/docs/Installation Guide.pdf",
   },
   {
     name: "App Guide",
     description: "How to use the mobile app",
-    size: "328 KB",
+    size: "42.570KB",
     href: "/docs/App Guide.pdf",
   },
   {
     name: "Maintenance & Troubleshooting",
     description: "Maintenance instructions and fault codes",
-    size: "140 KB",
+    size: "32.950 KB",
     href: "/docs/Maintenance & Troubleshooting.pdf",
   },
   {

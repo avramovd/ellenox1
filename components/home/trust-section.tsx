@@ -25,7 +25,7 @@ import { Star } from "lucide-react"
 const stats = [
   { value: "100+", label: "Installations" },
   { value: "98%", label: "Happy Customers" },
-  { value: "5", label: "Years Warranty" },
+  { value: "4", label: "Years Warranty" },
   { value: "24/7", label: "Support" },
 ]
 

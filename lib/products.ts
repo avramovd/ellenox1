@@ -50,87 +50,99 @@ export const smartCharger: Product = {
   smartFeatures: [
   {
     id: "app",
-    name: "Mobile App",
+    name: "Mobile App Control",
     description:
-      "Full control from your smartphone. Start/stop charging, monitor consumption, set schedules and receive real-time notifications. Available for iOS and Android.",
+      "Control and monitor charging via the Ellenox mobile app. Set schedules, track energy usage and manage charging remotely.",
     icon: "smartphone",
   },
   {
     id: "rfid",
     name: "RFID Access Control",
     description:
-      "Restrict access to the charging station with RFID cards. Ideal for shared parking or when you want to control who can charge.",
+      "Start and stop charging using RFID cards for secure and controlled access.",
     icon: "key-round",
   },
   {
     id: "solar",
-    name: "Solar Charge",
+    name: "Solar Integration",
     description:
-      "Optimise charging using your solar surplus. Prioritises PV energy to reduce grid usage and lower charging costs (requires compatible inverter/energy meter setup).",
+      "Supports solar charging optimisation when connected to a compatible energy system and CT clamp.",
     icon: "sun",
   },
   {
-    id: "dlb",
-    name: "Dynamic Load Balancing (DLB)",
+    id: "power",
+    name: "Power Management",
     description:
-      "Intelligent load balancing automatically adjusts charging power based on your home consumption. Prevents overloading your electrical installation.",
+      "Automatically adjusts charging current to prevent overloading your household electrical system.",
     icon: "activity",
   },
   {
     id: "ocpp",
     name: "OCPP 1.6J",
     description:
-      "Open communication protocol that allows integration with any charging station management system, energy managers and smart home platforms.",
+      "Compatible with OCPP 1.6J for integration with charging management systems and remote control platforms.",
     icon: "plug-zap",
   },
 ],
 
   technicalSpecs: [
-    {
-      category: "Electrical Parameters",
-      specs: [
-        { label: "Maximum Power", value: "7.4kW (3-phase) / 7.4kW (1-phase)" },
-        { label: "Input Voltage", value: "230V (1-phase) / 400V (3-phase)" },
-        { label: "Maximum Current", value: "16A per phase" },
-        { label: "Frequency", value: "50/60 Hz" },
-      ],
-    },
-    {
-      category: "Connector & Cable",
-      specs: [
-        { label: "Connector Type", value: "Type 2 (IEC 62196-2)" },
-        { label: "Cable Length", value: "7.5 metres (included)" },
-        { label: "Compatibility", value: "All EVs with Type 2 / CCS" },
-      ],
-    },
-    {
-      category: "Connectivity",
-      specs: [
-        { label: "WiFi", value: "802.11 b/g/n (2.4 GHz)" },
-        { label: "Ethernet", value: "10/100 Mbps (optional)" },
-        { label: "4G/LTE", value: "Built-in module (optional)" },
-        { label: "Protocols", value: "OCPP 1.6J, OCPP 2.0.1, Modbus TCP" },
-      ],
-    },
-    {
-      category: "Physical Characteristics",
-      specs: [
-        { label: "Dimensions (WxHxD)", value: "240 x 380 x 140 mm" },
-        { label: "Weight", value: "5.8 kg (without cable)" },
-        { label: "Protection Rating", value: "IP65 (outdoor installation)" },
-        { label: "Operating Temperature", value: "-25°C to +50°C" },
-      ],
-    },
-    {
-      category: "Safety & Certifications",
-      specs: [
-        { label: "Shock Protection", value: "DC 6mA protection, Type A RCD" },
-        { label: "Overload Protection", value: "Built-in thermal protection" },
-        { label: "Certifications", value: "CE, UKCA, EN 61851, EN 62196" },
-        { label: "Warranty", value: "3 years" },
-      ],
-    },
-  ],
+  {
+    category: "Electrical Parameters",
+    specs: [
+      { label: "Rated Power", value: "7.4 kW (single-phase) / 22 kW (three-phase)" },
+      { label: "Rated Voltage", value: "AC220–240V / AC380–415V" },
+      { label: "Maximum Current", value: "Max 32A (adjustable 6–32A)" },
+      { label: "Frequency", value: "50/60 Hz" },
+    ],
+  },
+  {
+    category: "Connector",
+    specs: [
+      { label: "Connector Type", value: "Type 2" },
+    ],
+  },
+  {
+    category: "Protection & Safety",
+    specs: [
+      { label: "Ingress Protection", value: "IP65 (charger), IP54 (connector)" },
+      { label: "Residual Current Protection", value: "AC Type A 30mA + DC 6mA" },
+      { label: "Over Current Protection", value: "Supported (max 32A)" },
+      { label: "Over / Under Voltage Protection", value: "Supported" },
+      { label: "Over Temperature Protection", value: "Supported" },
+      { label: "PEN Protection", value: "Supported" },
+    ],
+  },
+  {
+    category: "Build & Installation",
+    specs: [
+      { label: "Material", value: "ABS + PC (Flammability Rating V-0)" },
+      { label: "Installation", value: "Wall mounted" },
+      { label: "Indicator", value: "LED Light" },
+      { label: "Standby Consumption", value: "<10W" },
+    ],
+  },
+  {
+    category: "Environment",
+    specs: [
+      { label: "Operating Temperature", value: "-25°C to +50°C" },
+      { label: "Humidity", value: "3% – 95%" },
+      { label: "Altitude", value: "<2000m" },
+    ],
+  },
+  {
+    category: "Dimensions",
+    specs: [
+      { label: "Size", value: "330 x 200 x 122 mm" },
+    ],
+  },
+  {
+    category: "Certifications",
+    specs: [
+      { label: "Certifications", value: "CE, UKCA" },
+      { label: "Standards", value: "EN 61851, EN 62196" },
+    ],
+  },
+],
   faqs: [
     {
       question: "Is it suitable for my electric vehicle?",

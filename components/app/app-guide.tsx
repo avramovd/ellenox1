@@ -1,5 +1,4 @@
-import { Download, LogIn, Wifi, Zap } from "lucide-react"
-
+import { Download, LogIn, Wifi, Zap, Bluetooth } from "lucide-react"
 const steps = [
   {
     icon: Download,
@@ -11,11 +10,11 @@ const steps = [
     title: "Create an Account",
     description: "Sign up with email or log in with Google/Apple",
   },
-  {
-    icon: Wifi,
-    title: "Connect Your Charger",
-    description: "Scan the QR code on your charging station",
-  },
+ {
+  icon: Bluetooth,
+  title: "Connect via Bluetooth",
+  description: "Pair your device with the charger using Bluetooth for quick setup",
+},
   {
     icon: Zap,
     title: "Start Charging",
