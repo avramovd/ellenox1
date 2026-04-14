@@ -1,28 +1,44 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Play, Calculator, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
-  const videoRef = useRef(null)
-  const [loadVideo, setLoadVideo] = useState(false)
+  const sectionRef = useRef(null)
+  const [showVideo, setShowVideo] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkScreen()
+    window.addEventListener("resize", checkScreen)
+
+    return () => window.removeEventListener("resize", checkScreen)
+  }, [])
+
+  useEffect(() => {
+    if (!sectionRef.current) return
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setLoadVideo(true)
+          setShowVideo(true)
           observer.disconnect()
         }
       },
-      { threshold: 0.2 }
+      {
+        rootMargin: "200px 0px", // зарежда малко преди да влезе в екрана
+        threshold: 0.01,
+      }
     )
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current)
-    }
+    observer.observe(sectionRef.current)
 
     return () => observer.disconnect()
   }, [])
@@ -71,34 +87,44 @@ export function HeroSection() {
           <div className="relative">
             <div
               id="video"
-              ref={videoRef}
+              ref={sectionRef}
               className="relative aspect-square overflow-hidden rounded-3xl bg-muted"
             >
-              <div className="h-full w-full">
+              {!showVideo ? (
+                <Image
+                  src="/video-cover.jpg"
+                  alt="Ellenox charger"
+                  fill
+                  priority={false}
+                  className="object-cover"
+                />
+              ) : isMobile ? (
                 <video
-                  className="block md:hidden h-full w-full object-contain"
+                  key="mobile-video"
+                  className="block h-full w-full object-contain"
                   autoPlay
                   muted
                   loop
                   playsInline
-                  preload="none"
+                  preload="metadata"
                   poster="/video-cover.jpg"
                 >
-                  {loadVideo && <source src="/360Mobile.mp4" type="video/mp4" />}
+                  <source src="/360Mobile.mp4" type="video/mp4" />
                 </video>
-
+              ) : (
                 <video
-                  className="hidden md:block h-full w-full object-cover"
+                  key="desktop-video"
+                  className="block h-full w-full object-cover"
                   autoPlay
                   muted
                   loop
                   playsInline
-                  preload="none"
+                  preload="metadata"
                   poster="/video-cover.jpg"
                 >
-                  {loadVideo && <source src="/360.mp4" type="video/mp4" />}
+                  <source src="/360.mp4" type="video/mp4" />
                 </video>
-              </div>
+              )}
 
               <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background/95 p-4 backdrop-blur shadow-lg">
                 <div className="flex items-center justify-between">
