@@ -7,7 +7,7 @@ import { Play, Calculator, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
-  const sectionRef = useRef(null)
+  const sectionRef = useRef<HTMLDivElement | null>(null)
   const [showVideo, setShowVideo] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -33,7 +33,7 @@ export function HeroSection() {
         }
       },
       {
-        rootMargin: "200px 0px", // зарежда малко преди да влезе в екрана
+        rootMargin: "200px 0px",
         threshold: 0.01,
       }
     )
@@ -98,19 +98,6 @@ export function HeroSection() {
                   priority={false}
                   className="object-cover"
                 />
-              ) : isMobile ? (
-                <video
-                  key="mobile-video"
-                  className="block h-full w-full object-contain"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  poster="/video-cover.jpg"
-                >
-                  <source src="/360Mobile.mp4" type="video/mp4" />
-                </video>
               ) : (
                 <video
                   key="desktop-video"
@@ -122,11 +109,11 @@ export function HeroSection() {
                   preload="metadata"
                   poster="/video-cover.jpg"
                 >
-                  <source src="/360.mp4" type="video/mp4" />
+                  <source src="/360.webm" type="video/webm" />
                 </video>
               )}
 
-              <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background/95 p-4 backdrop-blur shadow-lg">
+              <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background/95 p-4 shadow-lg backdrop-blur">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">
