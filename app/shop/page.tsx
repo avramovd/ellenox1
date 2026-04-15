@@ -88,12 +88,13 @@ export default function ShopPage() {
               </div>
 
               <div className="relative">
-<div className="mx-auto mt-[3px] aspect-square w-1/2 lg:w-[400px] overflow-hidden rounded-3xl bg-transparent">                  <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="h-full w-full object-contain"
-                  />
-                </div>
+<div className="mx-auto mt-[3px] h-[650px] w-full max-w-[950px] overflow-hidden rounded-3xl bg-transparent">
+  <img
+    src={product.image || "/placeholder.svg"}
+    alt={product.name}
+    className="h-full w-full object-cover"
+  />
+</div>
                 <div className="absolute -bottom-4 -right-4 rounded-2xl border border-border bg-background p-4 shadow-xl">
                   <div className="flex items-center gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
