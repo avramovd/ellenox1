@@ -88,8 +88,7 @@ export function HeroSection() {
             <div
               id="video"
               ref={sectionRef}
-              className="relative aspect-square overflow-hidden rounded-3xl bg-muted"
-            >
+className="relative h-[600px] md:h-[700px] overflow-hidden rounded-3xl bg-muted"            >
               {!showVideo ? (
                 <Image
                   src="/video-cover.jpg"
@@ -109,6 +108,7 @@ export function HeroSection() {
                   preload="metadata"
                   poster="/video-cover.jpg"
                 >
+                   <source src="/360.mp4" type="video/mp4" />
                   <source src="/360.webm" type="video/webm" />
                 </video>
               )}
