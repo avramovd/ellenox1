@@ -2,13 +2,14 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Play, Calculator, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
+  const sectionRef = useRef(null)
+  const [showVideo, setShowVideo] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
-  const [playMobileVideo, setPlayMobileVideo] = useState(false)
 
   useEffect(() => {
     const checkScreen = () => {
@@ -19,6 +20,27 @@ export function HeroSection() {
     window.addEventListener("resize", checkScreen)
 
     return () => window.removeEventListener("resize", checkScreen)
+  }, [])
+
+  useEffect(() => {
+    if (!sectionRef.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowVideo(true)
+          observer.disconnect()
+        }
+      },
+      {
+        rootMargin: "200px 0px", // зарежда малко преди да влезе в екрана
+        threshold: 0.01,
+      }
+    )
+
+    observer.observe(sectionRef.current)
+
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -65,41 +87,30 @@ export function HeroSection() {
           <div className="relative">
             <div
               id="video"
+              ref={sectionRef}
               className="relative aspect-square overflow-hidden rounded-3xl bg-muted"
             >
-              {isMobile ? (
-                !playMobileVideo ? (
-                  <button
-                    type="button"
-                    onClick={() => setPlayMobileVideo(true)}
-                    className="relative block h-full w-full"
-                    aria-label="Play product video"
-                  >
-                    <Image
-                      src="/video-cover.jpg"
-                      alt="Ellenox charger"
-                      fill
-                      className="object-contain"
-                      sizes="100vw"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 shadow-lg">
-                        <Play className="h-8 w-8 text-black fill-black" />
-                      </div>
-                    </div>
-                  </button>
-                ) : (
-                  <video
-                    key="mobile-video"
-                    className="block h-full w-full object-contain"
-                    controls
-                    playsInline
-                    preload="metadata"
-                    poster="/video-cover.jpg"
-                  >
-                    <source src="/360Mobile.mp4" type="video/mp4" />
-                  </video>
-                )
+              {!showVideo ? (
+                <Image
+                  src="/video-cover.jpg"
+                  alt="Ellenox charger"
+                  fill
+                  priority={false}
+                  className="object-cover"
+                />
+              ) : isMobile ? (
+                <video
+                  key="mobile-video"
+                  className="block h-full w-full object-contain"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster="/video-cover.jpg"
+                >
+                  <source src="/360Mobile.mp4" type="video/mp4" />
+                </video>
               ) : (
                 <video
                   key="desktop-video"
