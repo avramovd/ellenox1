@@ -88,11 +88,11 @@ export default function ShopPage() {
               </div>
 
               <div className="relative">
-<div className="mx-auto mt-[3px] h-[650px] w-full max-w-[950px] overflow-hidden rounded-3xl bg-transparent">
+<div className="mx-auto mt-[3px] h-[550px] w-full max-w-[800px]overflow-hidden rounded-3xl bg-transparent">
   <img
     src={product.image || "/placeholder.svg"}
     alt={product.name}
-    className="h-full w-full object-cover"
+    className="h-full w-full object-contain object-center"
   />
 </div>
                 <div className="absolute -bottom-4 -right-4 rounded-2xl border border-border bg-background p-4 shadow-xl">
