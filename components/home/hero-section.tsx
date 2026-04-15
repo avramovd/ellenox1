@@ -7,8 +7,20 @@ import { Play, Calculator, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function HeroSection() {
-  const sectionRef = useRef<HTMLDivElement | null>(null)
+  const sectionRef = useRef(null)
   const [showVideo, setShowVideo] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkScreen()
+    window.addEventListener("resize", checkScreen)
+
+    return () => window.removeEventListener("resize", checkScreen)
+  }, [])
 
   useEffect(() => {
     if (!sectionRef.current) return
@@ -21,7 +33,7 @@ export function HeroSection() {
         }
       },
       {
-        rootMargin: "200px 0px",
+        rootMargin: "200px 0px", // зарежда малко преди да влезе в екрана
         threshold: 0.01,
       }
     )
@@ -37,8 +49,6 @@ export function HeroSection() {
 
       <div className="container relative mx-auto px-4 py-20 md:py-32">
         <div className="grid items-center gap-12 lg:grid-cols-2">
-
-          {/* LEFT SIDE */}
           <div className="flex flex-col gap-6">
             <h1 className="text-balance text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl">
               Smart charging for your{" "}
@@ -74,53 +84,49 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
           <div className="relative">
             <div
               id="video"
               ref={sectionRef}
               className="relative aspect-square overflow-hidden rounded-3xl bg-muted"
             >
-
-              {/* LAZY IMAGE */}
               {!showVideo ? (
                 <Image
                   src="/video-cover.jpg"
                   alt="Ellenox charger"
                   fill
-                  className="object-contain"
-                  sizes="100vw"
+                  priority={false}
+                  className="object-cover"
                 />
+              ) : isMobile ? (
+                <video
+                  key="mobile-video"
+                  className="block h-full w-full object-contain"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster="/video-cover.jpg"
+                >
+                  <source src="/360Mobile.mp4" type="video/mp4" />
+                </video>
               ) : (
-                <>
-                  {/* MOBILE VIDEO */}
-                  <video
-                    className="block md:hidden h-full w-full object-contain"
-                    controls
-                    playsInline
-                    preload="metadata"
-                    poster="/video-cover.jpg"
-                  >
-                    <source src="/360Mobile.mp4" type="video/mp4" />
-                  </video>
-
-                  {/* DESKTOP VIDEO */}
-                  <video
-                    className="hidden md:block h-full w-full object-cover"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    poster="/video-cover.jpg"
-                  >
-                    <source src="/360.mp4" type="video/mp4" />
-                  </video>
-                </>
+                <video
+                  key="desktop-video"
+                  className="block h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster="/video-cover.jpg"
+                >
+                  <source src="/360.mp4" type="video/mp4" />
+                </video>
               )}
 
-              {/* PRODUCT CARD */}
-              <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background p-4 shadow-lg">
+              <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-background/95 p-4 backdrop-blur shadow-lg">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-muted-foreground">
@@ -134,10 +140,8 @@ export function HeroSection() {
                   </Button>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </section>
