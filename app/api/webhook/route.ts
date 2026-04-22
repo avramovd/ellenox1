@@ -67,10 +67,10 @@ export async function POST(req: Request) {
       EMAIL_SECURE: process.env.EMAIL_SECURE,
       EMAIL_USER: process.env.EMAIL_USER,
       EMAIL_PASS_SET: !!process.env.EMAIL_PASS,
-      ORDERS_TO_EMAIL: process.env.ORDERS_TO_EMAIL,
+      SALES_TO_EMAIL: process.env.SALES_TO_EMAIL,
     });
 
-    const toInternal = process.env.ORDERS_TO_EMAIL || "quotes@ellenox.uk";
+    const toInternal = process.env.SALES_TO_EMAIL || "sales@ellenox.uk";
     const fromEmail = process.env.EMAIL_USER || "quotes@ellenox.uk";
 
     const transporter = getMailer();

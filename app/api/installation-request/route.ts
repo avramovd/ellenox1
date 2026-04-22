@@ -4,7 +4,8 @@ import nodemailer from "nodemailer"
 export async function POST(req: Request) {
   try {
     const data = await req.json()
-    console.log('Received Webhook POST request', data);
+    console.log("Received Webhook POST request", data)
+
     if (!data?.gdprConsent) {
       return NextResponse.json({ error: "Consent is required" }, { status: 400 })
     }
@@ -20,7 +21,6 @@ export async function POST(req: Request) {
       "mainFuse",
     ]
 
-    console.log('Line 23 of the Webhook POST request', required);
     for (const k of required) {
       if (!data?.[k]) {
         return NextResponse.json({ error: `Missing field: ${k}` }, { status: 400 })
@@ -29,10 +29,20 @@ export async function POST(req: Request) {
 
     const host = process.env.EMAIL_HOST
     const port = Number(process.env.EMAIL_PORT || "587")
-    const secure = port === 465
+    const secure = process.env.EMAIL_SECURE === "true"
     const user = process.env.EMAIL_USER
     const pass = process.env.EMAIL_PASS
     const to = process.env.ORDERS_TO_EMAIL ?? user
+
+    console.log("MAIL DEBUG:", {
+      host,
+      port,
+      secure,
+      user,
+      hasPass: !!pass,
+      passLength: pass?.length,
+      to,
+    })
 
     if (!host || !user || !pass || !to) {
       return NextResponse.json({ error: "Email env vars are missing" }, { status: 500 })
@@ -43,8 +53,13 @@ export async function POST(req: Request) {
       port,
       secure,
       auth: { user, pass },
+      tls: {
+        rejectUnauthorized: false,
+      },
     })
 
+    await transporter.verify()
+    console.log("SMTP verify OK")
 
     const subject = `Installation Request — ${data.name} (${data.postCode})`
     const text = [

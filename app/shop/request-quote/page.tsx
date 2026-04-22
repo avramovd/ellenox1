@@ -21,7 +21,7 @@ const serviceIncludes = [
   },
   {
     icon: Clock,
-    title: "Quote Within 24 Hours",
+    title: "Quote Within 48 Hours",
     description: "Receive a detailed quote with all costs included no hidden fees",
   },
   {
@@ -103,13 +103,13 @@ export default async function RequestQuotePage({
                 {/* Product Summary */}
                 <div className="rounded-2xl border border-border bg-background p-6">
                   <div className="flex gap-4">
-                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-muted">
-                      <img
-                        src={product.image || "/placeholder.svg"}
-                        alt={product.name}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
+                   <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-muted">
+  <img
+    src={product.image || "/placeholder.svg"}
+    alt={product.name}
+    className="max-h-full max-w-full object-contain"
+  />
+</div>
                     <div>
                       <h3 className="font-semibold">{product.name}</h3>
                       <p className="mt-1 text-sm text-muted-foreground">{product.tagline}</p>

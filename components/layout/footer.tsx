@@ -11,8 +11,8 @@ const footerLinks = {
   ],
   company: [
     { name: "About Us", href: "/about" },
-    { name: "Contact", href: "/about#contact" },
-    { name: "Partners", href: "/about#partners" },
+    { name: "Calculate Savings", href: "/compatibility#calculator" },
+   // { name: "Partners", href: "/about#partners" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
@@ -40,15 +40,26 @@ export function Footer() {
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
   Reliable home EV charging solutions designed for safety, efficiency, and everyday convenience. Power your journey with confidence.
 </p>
-            <div className="mt-6 flex gap-4">
-              <Link href="#" className="text-muted-foreground transition-colors hover:text-primary">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link href="#" className="text-muted-foreground transition-colors hover:text-primary">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </Link>
+           <div className="mt-6 flex gap-4">
+  <Link
+    href="https://www.facebook.com/profile.php?id=61568871891239"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-muted-foreground transition-colors hover:text-primary"
+  >
+    <Facebook className="h-5 w-5" />
+    <span className="sr-only">Facebook</span>
+  </Link>
+
+  <Link
+    href="https://www.instagram.com/ellenoxltd/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-muted-foreground transition-colors hover:text-primary"
+  >
+    <Instagram className="h-5 w-5" />
+    <span className="sr-only">Instagram</span>
+  </Link>
               <Link href="#" className="text-muted-foreground transition-colors hover:text-primary">
                 <Linkedin className="h-5 w-5" />
                 <span className="sr-only">LinkedIn</span>

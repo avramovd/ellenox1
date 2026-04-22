@@ -89,12 +89,13 @@ export const smartCharger: Product = {
   {
     category: "Electrical Parameters",
     specs: [
-      { label: "Rated Power", value: "7.4 kW (single-phase) / 22 kW (three-phase)" },
-      { label: "Rated Voltage", value: "AC220–240V / AC380–415V" },
+      { label: "Rated Power", value: "7.4 kW (single-phase)" },
+      { label: "Rated Voltage", value: "AC 220–240V" },
       { label: "Maximum Current", value: "Max 32A (adjustable 6–32A)" },
       { label: "Frequency", value: "50/60 Hz" },
     ],
   },
+
   {
     category: "Connector",
     specs: [
