@@ -84,11 +84,12 @@ export function HeroSection() {
             </div>
           </div>
 
-          <div className="relative">
+          <div className="relative mx-auto w-full max-w-[280px] sm:max-w-[420px] md:max-w-[600px] lg:max-w-[700px]">
             <div
               id="video"
               ref={sectionRef}
-className="relative h-[600px] md:h-[700px] overflow-hidden rounded-3xl bg-muted"            >
+              className="relative h-[320px] sm:h-[450px] md:h-[600px] lg:h-[650px] overflow-hidden rounded-3xl bg-muted"
+  >
               {!showVideo ? (
                 <Image
                   src="/video-cover.jpg"
