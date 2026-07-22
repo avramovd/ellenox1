@@ -129,3 +129,6 @@
 html {
   scroll-behavior: smooth;
 }
+.specification-text {
+  white-space: pre-line;
+}

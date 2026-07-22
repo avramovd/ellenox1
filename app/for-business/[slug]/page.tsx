@@ -74,9 +74,12 @@ export default async function BusinessProductPage({ params }: ProductPageProps) 
 
                 <ul className="mt-4 grid gap-3 text-muted-foreground md:grid-cols-2">
                   {product.specs.map((spec) => (
-                    <li key={spec} className="rounded-lg border p-3">
-                      {spec}
-                    </li>
+                    <li
+  key={spec}
+  className="whitespace-pre-line rounded-lg border p-3"
+>
+  {spec}
+</li>
                   ))}
                 </ul>
               </div>
