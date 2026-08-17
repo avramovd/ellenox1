@@ -32,7 +32,7 @@ export default async function BusinessProductPage({ params }: ProductPageProps) 
     <>
       <Header />
 
-      <main className="container mx-auto px-4 py-16">
+      <main className="container mx-auto px-1 py-16 md:px-4">
         <div className="mx-auto max-w-4xl">
           <div className="mb-8 text-center">
             <h1 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl">
@@ -42,16 +42,16 @@ export default async function BusinessProductPage({ params }: ProductPageProps) 
 
           <div className="overflow-hidden rounded-2xl border bg-background shadow-sm">
             {product.image && (
-              <div className="relative h-[340px] w-full bg-white md:h-[390px]">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-contain object-top p-10"
-                  priority
-                  unoptimized
-                />
-              </div>
+              <div className="relative h-[320px] w-full overflow-hidden bg-white md:h-[390px]">
+  <Image
+    src={product.image}
+    alt={product.name}
+    fill
+    className="origin-center scale-[1.0] object-contain object-center p-2 md:origin-top md:scale-100 md:object-top md:p-10"
+    priority
+    unoptimized
+  />
+</div>
             )}
 
             <div className="p-8">

@@ -220,7 +220,7 @@ export const businessProducts = [
     ],
   },
   {
-    name: "ELLENOX 300kW DC Chargerf",
+    name: "ELLENOX 300kW DC Charger",
     menuName: "300kW DC Dual Guns",
     slug: "ellenox-300kw-dc-dual-guns",
     href: "/for-business/ellenox-300kw-dc-dual-guns",
