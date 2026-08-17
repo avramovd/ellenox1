@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
+import { PAYMENT_TYPE_SHOP_ORDER } from "@/lib/payments";
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
@@ -42,6 +43,19 @@ if (!priceId) {
 
     const orderId = `ORD-${Date.now()}`;
 
+const metadata = {
+  paymentType: PAYMENT_TYPE_SHOP_ORDER,
+  orderId,
+  productName: String(productName ?? "EV Charger"),
+  variant: String(variant ?? ""),
+  quantity: String(qtyNum),
+  name: String(name ?? ""),
+  email: String(email ?? ""),
+  phone: String(phone ?? ""),
+  address: String(fullAddress ?? ""),
+  notes: String(deliveryNotes ?? ""),
+};
+
 const session = await stripe.checkout.sessions.create({
   mode: "payment",
   line_items: [{ price: priceId, quantity: qtyNum }],
@@ -51,17 +65,10 @@ const session = await stripe.checkout.sessions.create({
   success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
   cancel_url: `${appUrl}/cancel`,
 
-  metadata: {
-    orderId,
-    productName: String(productName ?? "EV Charger"),
-    variant: String(variant ?? ""),
-    quantity: String(qtyNum),
-    name: String(name ?? ""),
-    email: String(email ?? ""),
-    phone: String(phone ?? ""),
-    address: String(fullAddress ?? ""),
-    notes: String(deliveryNotes ?? ""),
-  },
+  metadata,
+  // Keep the same tag on the PaymentIntent so the type survives in Stripe
+  // reporting and refunds, not just on the checkout session.
+  payment_intent_data: { metadata },
 });
 
     return NextResponse.json({ url: session.url });

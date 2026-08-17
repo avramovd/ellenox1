@@ -2,8 +2,31 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getMailer } from "@/lib/mailer";
+import {
+  PAYMENT_TYPE_WALLET_TOPUP,
+  WALLET_PRODUCT_NAME,
+  collectMetadata,
+  getWalletUserReference,
+  resolvePaymentType,
+} from "@/lib/payments";
 
 export const runtime = "nodejs";
+
+/** Fallback for shop orders that were created without a productName in metadata. */
+async function getLineItemName(stripe: Stripe, sessionId: string) {
+  try {
+    const items = await stripe.checkout.sessions.listLineItems(sessionId, {
+      limit: 1,
+    });
+    return items.data[0]?.description ?? null;
+  } catch (err) {
+    console.error(
+      "LINE ITEMS FETCH FAILED:",
+      err instanceof Error ? err.message : String(err)
+    );
+    return null;
+  }
+}
 
 export async function POST(req: Request) {
   console.log("WEBHOOK HIT");
@@ -24,9 +47,10 @@ export async function POST(req: Request) {
 
   const rawBody = Buffer.from(await req.arrayBuffer());
 
+  const stripe = getStripe();
+
   let event: Stripe.Event;
   try {
-    const stripe = getStripe();
     event = stripe.webhooks.constructEvent(rawBody, sig, secret);
     console.log("EVENT TYPE:", event.type);
   } catch (err) {
@@ -50,7 +74,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ received: true }, { status: 200 });
     }
 
-    const m = session.metadata ?? {};
+    const m = await collectMetadata(stripe, session);
+    const paymentType = resolvePaymentType(m);
+    const isWalletTopUp = paymentType === PAYMENT_TYPE_WALLET_TOPUP;
+    console.log("PAYMENT TYPE:", paymentType);
+
     const customerEmail =
       session.customer_details?.email ?? session.customer_email ?? null;
 
@@ -78,42 +106,90 @@ export async function POST(req: Request) {
     await transporter.verify();
     console.log("SMTP VERIFY OK");
 
+    const resolvedProductName = isWalletTopUp
+      ? WALLET_PRODUCT_NAME
+      : m.productName || (await getLineItemName(stripe, session.id));
+
+    const productName = resolvedProductName ?? "-";
+
+    const walletUser = getWalletUserReference(m);
+
+    const internalMail = isWalletTopUp
+      ? {
+          subject: `✅ PAID wallet top-up (${currency} ${amount})`,
+          text:
+            `Payment: PAID ✅\n` +
+            `Type: Wallet top-up\n` +
+            `Session: ${session.id}\n` +
+            `Customer email: ${customerEmail ?? "-"}\n` +
+            `Amount: ${currency} ${amount}\n\n` +
+            `--- Top-up data ---\n` +
+            `Product: ${productName}\n` +
+            `Wallet user: ${walletUser ?? "-"}\n` +
+            `Name: ${m.name ?? "-"}\n` +
+            `Email: ${m.email ?? customerEmail ?? "-"}\n` +
+            `Phone: ${m.phone ?? "-"}\n`,
+        }
+      : {
+          subject: `✅ PAID order (${currency} ${amount})`,
+          text:
+            `Payment: PAID ✅\n` +
+            `Type: Shop order\n` +
+            `Session: ${session.id}\n` +
+            `Customer email: ${customerEmail ?? "-"}\n` +
+            `Amount: ${currency} ${amount}\n\n` +
+            `--- Form data ---\n` +
+            `Product: ${productName}\n` +
+            `Variant: ${m.variant ?? "-"}\n` +
+            `Quantity: ${m.quantity ?? "-"}\n` +
+            `Name: ${m.name ?? "-"}\n` +
+            `Phone: ${m.phone ?? "-"}\n` +
+            `Email: ${m.email ?? customerEmail ?? "-"}\n` +
+            `Address: ${m.address ?? "-"}\n` +
+            `Notes: ${m.notes ?? "-"}\n`,
+        };
+
     const info1 = await transporter.sendMail({
-      from: `"Ellenox Orders" <${fromEmail}>`,
+      from: `"Ellenox ${isWalletTopUp ? "Wallet" : "Orders"}" <${fromEmail}>`,
       to: toInternal,
-      subject: `✅ PAID order (${currency} ${amount})`,
-      text:
-        `Payment: PAID ✅\n` +
-        `Session: ${session.id}\n` +
-        `Customer email: ${customerEmail ?? "-"}\n` +
-        `Amount: ${currency} ${amount}\n\n` +
-        `--- Form data ---\n` +
-        `Product: ${m.productName ?? "-"}\n` +
-        `Variant: ${m.variant ?? "-"}\n` +
-        `Quantity: ${m.quantity ?? "-"}\n` +
-        `Name: ${m.name ?? "-"}\n` +
-        `Phone: ${m.phone ?? "-"}\n` +
-        `Email: ${m.email ?? customerEmail ?? "-"}\n` +
-        `Address: ${m.address ?? "-"}\n` +
-        `Notes: ${m.notes ?? "-"}\n`,
+      subject: internalMail.subject,
+      text: internalMail.text,
     });
 
     console.log("INTERNAL EMAIL SENT:", info1.messageId);
 
     if (customerEmail) {
+      const customerMail = isWalletTopUp
+        ? {
+            subject: "Your Ellenox wallet has been topped up",
+            text:
+              `Hi${m.name ? ` ${m.name}` : ""},\n\n` +
+              `Thanks for your payment. Your wallet balance has been topped up successfully.\n\n` +
+              `Top-up summary:\n` +
+              `• ${productName}\n` +
+              `• Amount paid: ${currency} ${amount}\n` +
+              `• Reference: ${session.id}\n\n` +
+              `The credit is available in the Ellenox app and can be used at any public charge point.\n\n` +
+              `Best regards,\nEllenox Team`,
+          }
+        : {
+            subject: "Thanks — we received your order",
+            text:
+              `Hi${m.name ? ` ${m.name}` : ""},\n\n` +
+              `Thanks for your payment. We’ve received your order successfully.\n\n` +
+              `Order summary:\n` +
+              `• ${resolvedProductName ?? "Your order"}${m.quantity ? ` (x${m.quantity})` : ""}\n` +
+              (m.variant ? `• Option: ${m.variant}\n` : "") +
+              `• Amount paid: ${currency} ${amount}\n` +
+              `• Reference: ${session.id}\n\n` +
+              `Best regards,\nEllenox Team`,
+          };
+
       const info2 = await transporter.sendMail({
         from: `"Ellenox" <${fromEmail}>`,
         to: customerEmail,
-        subject: "Thanks — we received your order",
-        text:
-          `Hi${m.name ? ` ${m.name}` : ""},\n\n` +
-          `Thanks for your payment. We’ve received your order successfully.\n\n` +
-          `Order summary:\n` +
-          `• Model 1${m.quantity ? ` (x${m.quantity})` : ""}\n` +
-          (m.variant ? `• Option: ${m.variant}\n` : "") +
-          `• Amount paid: ${currency} ${amount}\n` +
-          `• Reference: ${session.id}\n\n` +
-          `Best regards,\nEllenox Team`,
+        subject: customerMail.subject,
+        text: customerMail.text,
       });
 
       console.log("CUSTOMER EMAIL SENT:", info2.messageId);
