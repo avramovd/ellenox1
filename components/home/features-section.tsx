@@ -48,12 +48,12 @@ const features = [
 
   // ✅ 7th card (bottom-center)
   {
-    icon: Award,
-    title: "Approved by OZEV for £500 Grant",
-    description:
-      "Eligible for the OZEV grant — save up to £500 on your home charger installation.",
-    isCentered: true,
-  },
+  icon: Award,
+  title: "OZEV approved",
+  description:
+    "On the government's list of approved home chargepoints, tested to the required UK safety and smart charging standards.",
+  isCentered: true,
+},
 ]
 
 export function FeaturesSection() {
