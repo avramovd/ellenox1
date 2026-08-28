@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Zap, Facebook, Instagram, Linkedin, Youtube, Mail, Phone, MapPin } from "lucide-react"
+import { CookieSettingsLink } from "@/components/ui/cookie-settings-link"
 
 const footerLinks = {
   product: [
@@ -157,6 +158,7 @@ export function Footer() {
           {link.name}
         </Link>
       ))}
+      <CookieSettingsLink />
     </div>
 
   </div>
