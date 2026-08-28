@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
 import { CookieBanner } from "@/components/ui/cookie-banner"
+import { CONSENT_DEFAULT_SNIPPET, GTM_NOSCRIPT_SRC, GTM_SNIPPET } from "@/lib/gtm"
 import {
   DEFAULT_LOCALE,
   DEFAULT_OG_IMAGE,
@@ -113,7 +114,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-GB">
+      <head>
+        {/* Consent Mode v2 defaults — must stay the first script in <head>, above GTM. */}
+        <script dangerouslySetInnerHTML={{ __html: CONSENT_DEFAULT_SNIPPET }} />
+        {/* Google Tag Manager */}
+        <script dangerouslySetInnerHTML={{ __html: GTM_SNIPPET }} />
+        {/* End Google Tag Manager */}
+      </head>
       <body className="font-sans antialiased">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src={GTM_NOSCRIPT_SRC}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
