@@ -14,6 +14,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
 
 export function ServiceQuoteForm() {
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [touched, setTouched] = useState<Record<string, boolean>>({})
 
   const [formData, setFormData] = useState({
@@ -56,7 +57,7 @@ export function ServiceQuoteForm() {
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault()
 
-  if (!isValid) {
+  if (!isValid || isSubmitting) {
     setTouched({
       name: true,
       email: true,
@@ -70,6 +71,8 @@ export function ServiceQuoteForm() {
     })
     return
   }
+
+  setIsSubmitting(true)
 
   try {
     const res = await fetch("/api/installation-request", {
@@ -86,9 +89,14 @@ export function ServiceQuoteForm() {
   return
 }
 
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({ event: "generate_lead" })
+
     setSubmitted(true) // ✅ показва success съобщението
   } catch {
     alert("Network error")
+  } finally {
+    setIsSubmitting(false)
   }
 }
 
@@ -291,9 +299,9 @@ export function ServiceQuoteForm() {
         </div>
         {touched.gdprConsent && errors.gdprConsent && <p className="text-xs text-destructive">{errors.gdprConsent}</p>}
 
-        <Button type="submit" size="lg" className="w-full gap-2" disabled={!isValid}>
+        <Button type="submit" size="lg" className="w-full gap-2" disabled={!isValid || isSubmitting}>
           <Send className="h-4 w-4" />
-          Send Request
+          {isSubmitting ? "Sending..." : "Send Request"}
         </Button>
 
         {!isValid && (
