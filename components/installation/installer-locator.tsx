@@ -29,7 +29,7 @@ interface Installer {
 }
 
 /* ================================
-   DATA (ONLY 1 COMPANY)
+   DATA
 ================================ */
 
 const installers: Installer[] = [
@@ -44,6 +44,18 @@ const installers: Installer[] = [
     postalCodes: ["GU26"],
     certified: true,
     website: "https://lilelectrical.co.uk/", // ← стави вистинскиот линк
+  },
+  {
+    id: "full-circuit",
+    name: "Full Circuit",
+    address: "24 Janus House, Olympian Ct, Lawrence St, York YO10 3UP",
+    phone: "",
+    email: "",
+    rating: 0,
+    reviews: 0,
+    postalCodes: ["YO10"],
+    certified: true,
+    website: "https://fullcircuitworks.co.uk/",
   },
 ]
 
@@ -60,6 +72,17 @@ const ukInstallers: UKInstaller[] = [
     city: "Haslemere",
     postcodePrefixes: ["GU26"],
     website: "https://lilelectrical.co.uk/",
+  },
+  {
+    id: "full-circuit",
+    type: "installer",
+    // exact coordinates for YO10 3UP (postcodes.io)
+    lat: 53.955743,
+    lng: -1.061358,
+    name: "Full Circuit",
+    city: "York",
+    postcodePrefixes: ["YO10"],
+    website: "https://fullcircuitworks.co.uk/",
   },
 ]
 
@@ -174,13 +197,24 @@ export function InstallerLocator() {
         return
       }
 
-      const only = ukInstallers[0]
-      const d = haversineMiles(userLoc, { lat: only.lat, lng: only.lng })
+      // keep every installer within the radius, nearest first
+      const nearby = ukInstallers
+        .map((ins) => ({
+          ins,
+          distance: haversineMiles(userLoc, { lat: ins.lat, lng: ins.lng }),
+        }))
+        .filter(({ distance }) => distance <= RADIUS_MILES)
+        .sort((a, b) => a.distance - b.distance)
+        .map(({ ins }) => ins)
 
-      if (d <= RADIUS_MILES) {
-        setFilteredInstallers([only])
-        setSelectedInstaller(only)
-        setSearchResults([installers[0]])
+      if (nearby.length > 0) {
+        setFilteredInstallers(nearby)
+        setSelectedInstaller(nearby[0])
+        setSearchResults(
+          nearby
+            .map((ins) => installers.find((i) => i.id === ins.id))
+            .filter((i): i is Installer => Boolean(i))
+        )
       } else {
         setFilteredInstallers([])
         setSelectedInstaller(null)
