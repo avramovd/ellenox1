@@ -5,7 +5,7 @@ import { useMemo, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CheckCircle } from "lucide-react"
+import { ArrowRight, CheckCircle, Lock } from "lucide-react"
 import {
   INSTALLED_PRICE_FROM,
   QUOTE_LEAD_FORM_ID,
@@ -95,7 +95,7 @@ export function QuoteLeadForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-border bg-background p-8 text-center shadow-sm">
+      <div className="rounded-2xl border border-border bg-background p-8 text-center shadow-xl shadow-black/5">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
           <CheckCircle className="h-7 w-7" />
         </div>
@@ -111,16 +111,19 @@ export function QuoteLeadForm() {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-2xl border border-border bg-background p-6 shadow-sm md:p-8"
+      className="rounded-2xl border border-border bg-background p-6 shadow-xl shadow-black/10 md:p-8"
     >
-      <h2 className="text-xl font-bold">Get Your Installation Price</h2>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Free, no-obligation quote. No pushy sales calls.
+      <h2 className="text-xl font-bold tracking-tight sm:text-2xl">Get Your Installation Price</h2>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        Fill in a few details and we&rsquo;ll contact you with a personalised quote within 48 hours. No
+        obligation, no pressure.
       </p>
 
-      <div className="mt-6 space-y-5">
-        <div className="space-y-2">
-          <Label htmlFor="lead-name">Name</Label>
+      <div className="mt-6 space-y-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="lead-name">
+            Name <span className="text-destructive">*</span>
+          </Label>
           <Input
             id="lead-name"
             name="name"
@@ -128,14 +131,17 @@ export function QuoteLeadForm() {
             value={formData.name}
             onBlur={() => markTouched("name")}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder="John Smith"
+            placeholder="e.g. John Smith"
+            className="h-11"
             aria-invalid={touched.name && !!errors.name}
           />
           {touched.name && errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="lead-postcode">Postcode</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="lead-postcode">
+            Postcode <span className="text-destructive">*</span>
+          </Label>
           <Input
             id="lead-postcode"
             name="postal-code"
@@ -143,7 +149,8 @@ export function QuoteLeadForm() {
             value={formData.postCode}
             onBlur={() => markTouched("postCode")}
             onChange={(e) => setFormData({ ...formData, postCode: e.target.value })}
-            placeholder="SW1A 1AA"
+            placeholder="e.g. SW1A 1AA"
+            className="h-11"
             aria-invalid={touched.postCode && !!errors.postCode}
           />
           {touched.postCode && errors.postCode && (
@@ -151,8 +158,10 @@ export function QuoteLeadForm() {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="lead-phone">Phone number</Label>
+        <div className="space-y-1.5">
+          <Label htmlFor="lead-phone">
+            Phone number <span className="text-destructive">*</span>
+          </Label>
           <Input
             id="lead-phone"
             name="tel"
@@ -162,14 +171,22 @@ export function QuoteLeadForm() {
             value={formData.phone}
             onBlur={() => markTouched("phone")}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="07700 900123"
+            placeholder="e.g. 07712 345678"
+            className="h-11"
             aria-invalid={touched.phone && !!errors.phone}
           />
           {touched.phone && errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
         </div>
 
-        <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Sending..." : "Get My Installation Price"}
+        <Button type="submit" size="lg" className="mt-2 h-12 w-full text-base" disabled={isSubmitting}>
+          {isSubmitting ? (
+            "Sending..."
+          ) : (
+            <>
+              Get My Installation Price
+              <ArrowRight className="ml-2 h-5 w-5" aria-hidden="true" />
+            </>
+          )}
         </Button>
 
         {serverError && (
@@ -178,13 +195,19 @@ export function QuoteLeadForm() {
           </p>
         )}
 
-        <p className="text-center text-xs text-muted-foreground">
-          By submitting this form you agree to us contacting you about your quote, in line with our{" "}
-          <a href="/privacy" className="text-primary underline hover:no-underline">
-            Privacy Policy
-          </a>
-          .
-        </p>
+        {/* The design replaces the consent line with a reassurance line. The
+            Privacy Policy link stays: this form collects personal data on paid
+            traffic, so dropping the link would be a compliance regression. */}
+        <div className="flex items-start gap-2.5 pt-1 text-xs leading-relaxed text-muted-foreground">
+          <Lock className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+          <p>
+            Your details are secure and will only be used to provide your quote. See our{" "}
+            <a href="/privacy" className="underline hover:no-underline">
+              Privacy Policy
+            </a>
+            .
+          </p>
+        </div>
       </div>
     </form>
   )
